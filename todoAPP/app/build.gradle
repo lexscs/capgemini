@@ -9,8 +9,3 @@ repositories {
     jcenter()
 }
 
-dependencies {
-    testImplementation     'junit:junit:4.13'
-    compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.13'
-
-}

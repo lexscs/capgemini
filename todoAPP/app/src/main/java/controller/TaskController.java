@@ -1,172 +1,182 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package controller;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
-import model.Tag;
+import java.sql.Date;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import model.Task;
 import util.ConnectionFactory;
 
 /**
  *
- * @author alxwatanabe
+ * @author 
  */
-public class TagDAO {
-
-    public void save(Tag tag) {
-        String sql = "INSERT INTO tags(name, color, createdAt, updatedAt) VALUES (?, ?, ?, ?)";
-
-        Connection conn = null;
-        PreparedStatement stmt = null;
-
+public class TaskController {
+    
+    public void save(Task task ){
+        String sql = "INSERT INTO tasks ("
+                +"idProject,"
+                + "name,"
+                + "description,"
+                + "completed,"
+                + "notes,"
+                + "deadline,"
+                +"createdAt,"
+                + "updatedAt) VALUES(?,?,?,?,?,?,?,?)";
+        
+        Connection connection = null;
+        PreparedStatement statement = null;
+        
         try {
-            //Cria uma conexï¿½o com o banco
-            conn = ConnectionFactory.getConnection();
-            //Cria um PreparedStatment, classe usada para executar a query
-            stmt = conn.prepareStatement(sql);
-
-            stmt.setString(1, tag.getName());
-            stmt.setString(2, tag.getColor());
-            stmt.setDate(3, new java.sql.Date(tag.getCreatedAt().getTime()));
-            stmt.setDate(4, new java.sql.Date(tag.getUpdatedAt().getTime()));
-
-            //Executa a sql para inserï¿½ï¿½o dos dados
-            stmt.execute();
-        } catch (SQLException ex) {
-            throw new RuntimeException("Erro ao salvar a tag", ex);
+            connection = ConnectionFactory.getConnection();
+            statement = connection.prepareStatement(sql);
+            
+            statement.setInt(1,task.getIdProject());
+            statement.setString(2,task.getName());
+            statement.setString(3, task.getDescription());
+            statement.setBoolean(4,task.isIsCompleted());
+            statement.setString(5,task.getNotes());
+            statement.setDate(6,new Date(task.getDeadline().getTime()));
+            statement.setDate(7, new Date( task.getCreatedAt().getTime()));
+            statement.setDate(8, new Date( task.getUpdatedAt().getTime()));
+            
+            statement.execute();
+            
+        } catch (Exception ex) {
+            throw new RuntimeException("erro ao salvar? a tarefa"+ ex.getMessage(),ex);
         } finally {
-            //Fecha as conexï¿½es
-            try {
-                if (stmt != null) {
-                    stmt.close();
-                }
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException ex) {
-                throw new RuntimeException("Erro ao fechar a conexão", ex);
-            }
-        }
-
-    }
-
-    public void update(Tag tag) {
-
-        String sql = "UPDATE tags SET name = ?, color = ?, createdAt = ?, updatedAt = ? WHERE id = ?";
-
-        Connection conn = null;
-        PreparedStatement stmt = null;
-
-        try {
-            //Cria uma conexï¿½o com o banco
-            conn = ConnectionFactory.getConnection();
-            //Cria um PreparedStatment, classe usada para executar a query
-            stmt = conn.prepareStatement(sql);
-
-            stmt.setString(1, tag.getName());
-            stmt.setString(2, tag.getColor());
-            stmt.setDate(3, new java.sql.Date(tag.getCreatedAt().getTime()));
-            stmt.setDate(4, new java.sql.Date(tag.getUpdatedAt().getTime()));
-            stmt.setInt(4, tag.getId());
-
-            //Executa a sql para inserï¿½ï¿½o dos dados
-            stmt.execute();
-        } catch (SQLException ex) {
-            throw new RuntimeException("Erro em atualizar a tag", ex);
-        } finally {
-            try {
-                if (stmt != null) {
-                    stmt.close();
-                }
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException ex) {
-                throw new RuntimeException("Erro ao fechar a conexão", ex);
-            }
+            ConnectionFactory.closeConnection(connection, statement);
+            
         }
     }
-
-    public List<Tag> getAll() {
-        String sql = "SELECT * FROM tags";
-
-        List<Tag> tags = new ArrayList();
-
-        Connection conn = null;
-        PreparedStatement stmt = null;
-
-        //Classe que vai recuperar os dados do banco de dados
-        ResultSet rset = null;
-
+    
+    public void update (Task task){
+        String sql = "UPDATE tasks SET "
+                +"idProject = ?, "
+                +"name = ?, "
+                +"description = ?, "
+                +"notes=?, "
+                +"completed = ?, "
+                +"deadline = ?, "
+                +"createdAt = ?, "
+                +"updatedAt = ? "
+                +"WHERE id = ?";
+        
+        Connection connection = null;
+        PreparedStatement statement = null;
+        
         try {
-            conn = ConnectionFactory.getConnection();
-            stmt = conn.prepareStatement(sql);
-
-            rset = stmt.executeQuery();
-
-            //Enquanto existir dados no banco de dados, faï¿½a
-            while (rset.next()) {
-
-                Tag tag = new Tag();
-
-                tag.setId(rset.getInt("id"));
-                tag.setName(rset.getString("name"));
-                tag.setColor(rset.getString("color"));
-                tag.setCreatedAt(rset.getDate("createdAt"));
-                tag.setCreatedAt(rset.getDate("updatedAt"));
-
-                //Adiciono o contato recuperado, a lista de contatos
-                tags.add(tag);
-            }
-        } catch (SQLException ex) {
-            throw new RuntimeException("Erro ao buscar os projetos", ex);
-        } finally {
-            try {
-                if (rset != null) {
-                    rset.close();
-                }
-                if (stmt != null) {
-                    stmt.close();
-                }
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException ex) {
-                throw new RuntimeException("Erro ao fechar a conexão", ex);
-            }
+            //Estabelecendo a conexao com o DB
+            connection = ConnectionFactory.getConnection();
+            //Preparando a query
+            statement = connection.prepareStatement(sql);
+            
+            //setando os valores do statement
+            statement.setInt (1,task.getIdProject());
+            statement.setString(2, task.getName());
+            statement.setString(3, task.getDescription());
+            statement.setString(4, task.getNotes());
+            statement.setBoolean(5, task.isIsCompleted());
+            statement.setDate(6, new Date (task.getDeadline().getTime()));
+            statement.setDate(7, new Date(task.getCreatedAt().getTime()));
+            statement.setDate(8, new Date( task.getUpdatedAt().getTime()));
+            statement.setInt(9, task.getId());
+            statement.execute();
+            
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao atualizar a tarefa"+ e.getMessage());
+        } finally{
+            ConnectionFactory.closeConnection(connection, statement);
         }
-        return tags;
     }
-
-    public void removeById(int id) {
-
-        String sql = "DELETE FROM tags WHERE id = ?";
-
-        Connection conn = null;
-        PreparedStatement stmt = null;
-
+    
+    public void remoteById(int taskID) {
+        String sql = "DELETE FROM tasks WHERE id = ?";
+        Connection connection = null;
+        PreparedStatement statement = null;
+        
         try {
-            conn = ConnectionFactory.getConnection();
-            stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, id);
-            stmt.execute();
-        } catch (SQLException ex) {
-            throw new RuntimeException("Erro ao deletar a tag", ex);
-        } finally {
-            try {
-                if (stmt != null) {
-                    stmt.close();
-                }
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException ex) {
-                throw new RuntimeException("Erro ao fechar a conexão", ex);
-            }
+            //Estabelecendo a conexao com o DB
+            connection = ConnectionFactory.getConnection();
+            //preparando a query
+            statement = connection.prepareStatement(sql);
+            //setando os valores
+            statement.setInt(1, taskID);
+            //executando a query
+            statement.execute();
+            
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao deletar a tarefa");
+        } finally { 
+            ConnectionFactory.closeConnection(connection, statement);
         }
-
+        
     }
-
+    
+    public List<Task> getAll(int idProject){
+        String sql = "SELECT * FROM tasks WHERE idProject = ?";
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        
+        // Lista de tarefas que será devolvida quando a chamada do método acontecer
+        List<Task> tasks = new ArrayList<Task>();
+        
+        try {
+            //Estabelecendo a conexao com o DB
+            connection = ConnectionFactory.getConnection();
+            statement = connection.prepareStatement(sql);
+            
+            //setando o valor que corresponde ao filtro de busca
+            statement.setInt(1, idProject);
+            //valor retornado pela execução da query
+            resultSet =  statement.executeQuery();
+           
+            //enquanto houverem valores a serem percorridos no meu resultSet
+           while(resultSet.next()){
+               Task task = new Task();
+               task.setId(resultSet.getInt("id"));
+               task.setIdProject(resultSet.getInt("idProject"));
+               task.setName(resultSet.getString("name"));
+               task.setDescription(resultSet.getString("description"));
+               task.setNotes(resultSet.getString("notes"));
+               task.setIsCompleted(resultSet.getBoolean("completed"));
+               task.setDeadline(resultSet.getDate("deadline"));
+               task.setCreatedAt(resultSet.getDate("createdAt"));
+               task.setUpdatedAt(resultSet.getDate("updatedAt"));
+               
+               tasks.add(task);
+           }
+        } catch (Exception ex) {
+            throw new RuntimeException("Erro ao inserir a tarefa" + ex.getMessage());
+        } finally{
+            ConnectionFactory.closeConnection(connection, statement, resultSet);
+        }
+        // Lista de tarefas que foi criada e carregada do banco de dados
+        return tasks ;
+    }
+    
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

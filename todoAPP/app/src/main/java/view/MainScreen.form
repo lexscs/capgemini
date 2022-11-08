@@ -123,13 +123,13 @@
               <Component id="jPanelToolBar" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jPanelProjectsToolBar" min="-2" max="-2" attributes="0"/>
                   <Component id="jPanelTasksTollBar" min="-2" max="-2" attributes="0"/>
+                  <Component id="jPanelProjectsToolBar" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jPanelProjects" max="32767" attributes="0"/>
-                  <Component id="jPanelEmptyTasks" pref="688" max="32767" attributes="0"/>
+                  <Component id="jPanelEmptyTasks" pref="880" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -194,7 +194,7 @@
             </Property>
             <Property name="horizontalAlignment" type="int" value="2"/>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/tick.png"/>
+              <Image iconType="3" name="/icons/tick/tick (3).png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="  App Tarefas"/>
             <Property name="toolTipText" type="java.lang.String" value=""/>
@@ -332,7 +332,7 @@
           <Properties>
             <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/add.png"/>
+              <Image iconType="3" name="/icons/add/add (4).png"/>
             </Property>
           </Properties>
           <Events>
@@ -366,7 +366,7 @@
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Component id="jLabelProjectsToolBarTitle" alignment="0" pref="53" max="32767" attributes="0"/>
+              <Component id="jLabelProjectsToolBarTitle" alignment="0" max="32767" attributes="0"/>
               <Component id="jLabelProjectsToolBarAdd" alignment="0" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
@@ -387,7 +387,7 @@
           <Properties>
             <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/add.png"/>
+              <Image iconType="3" name="/icons/add/add (4).png"/>
             </Property>
           </Properties>
           <Events>
